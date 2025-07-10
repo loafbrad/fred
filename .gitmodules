@@ -1,0 +1,3 @@
+[submodule "Moira"]
+	path = Moira
+	url = https://github.com/dirkwhoffmann/Moira.git
