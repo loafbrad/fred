@@ -2,3 +2,18 @@ Fred - (maybe) an Apple Lisa emulator
 
 Moira 68000 CPU core
 SDL2 for graphics
+
+
+Right now it just draws lines on a screen with the arrows keys...
+
+
+Components:
+68000    - Moira
+6504     - Incomplete
+6522     - Incomplete
+COPS421  - Incomplete
+8530     - Incomplete
+9512     - Incomplete
+Twiggy   - Incomplete
+ProFile  - Incomplete
+Sound    - Incomplete
