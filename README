@@ -9,7 +9,7 @@ Right now it just draws lines on a screen with the arrows keys...
 
 Components:
 68000    - Moira
-6504     - Incomplete
+6504     - mos6502
 6522     - Incomplete
 COPS421  - Incomplete
 8530     - Incomplete
