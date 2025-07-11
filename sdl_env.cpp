@@ -6,6 +6,19 @@
 #define REFRESH    60
 #define SPEED	   7890  //KHz
 int mem[PIX_WIDTH][PIX_HEIGHT];
+SDL_AudioSpec audio_spec_desired, audio_spec_obtained;
+
+/*= {
+	freq: 44100,
+	format:
+	channels:
+	silence:
+	samples:
+	padding:
+	size:
+	callback:
+	userdata:
+};*/
 
 typedef struct {
     SDL_Window* w;
@@ -15,7 +28,7 @@ typedef struct {
 // Initializes SDL and creates a window
 SDL_wr_t InitializeSDLandCreate(const char* windowName) {
     SDL_wr_t sdlWr;
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) == -1 ) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO) == -1 ) {
 		std::cout << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
 		return {nullptr, nullptr};
 	}

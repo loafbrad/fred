@@ -1,5 +1,19 @@
 #include "sdl_env.cpp"
 #include <iostream>
+int sample_n = 0;
+
+void fred_audio(void *data, Uint8 *stream, int len) {
+  const int tone = 440; // A4
+  const int sample_rate = 44100;
+  const int amp = 7000;
+  float freq = (float)tone;
+  Sint16* buf = (Sint16*)stream;
+  for(int i = 0; i < len/2; i++) { 
+    buf[i] = amp*cos(2*M_PI*freq*(((float)sample_n)/sample_rate));
+    sample_n = (sample_n < sample_rate) ? sample_n + 1 : 0;
+  }
+};
+
 int main( int argc, char* args[] ) {
     SDL_wr_t sdlWr;
     const Uint8* keys;
@@ -13,10 +27,21 @@ int main( int argc, char* args[] ) {
     };
     int SDL_RenderFillRect(SDL_Renderer * renderer,
                        const SDL_Rect * rect);
+    int numAudioDevices = SDL_GetNumAudioDevices(0);
+    SDL_zero(audio_spec_desired);
+    audio_spec_desired.freq = 44100;
+    // Signed 16-bit little-endian samples
+    audio_spec_desired.format = AUDIO_S16LSB;
+    audio_spec_desired.channels = 1;
+    audio_spec_desired.samples = 4096;
+    audio_spec_desired.callback = fred_audio;
+    SDL_AudioDeviceID audio_dev = SDL_OpenAudioDevice(NULL, 0, &audio_spec_desired, &audio_spec_obtained, SDL_AUDIO_ALLOW_ANY_CHANGE);
     while (!quit){
        keys = SDL_GetKeyboardState(numKeys);
+       // Pressing left key plays audio
        if (keys[SDL_SCANCODE_LEFT]) {
         myRect.x--;
+        SDL_PauseAudioDevice(audio_dev, 0);
        }
        if (keys[SDL_SCANCODE_RIGHT]) {
         myRect.x++;
@@ -52,6 +77,7 @@ int main( int argc, char* args[] ) {
     // Destroy window
     SDL_DestroyWindow(sdlWr.w);
 
+    SDL_CloseAudioDevice(audio_dev);
     // Quit SDL subsystems
     SDL_Quit();
 
